@@ -1,0 +1,4 @@
+services:
+#    p6_platform.example:
+#        class: P6\PlatformBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
