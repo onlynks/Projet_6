@@ -1,0 +1,7 @@
+p6_platform_homepage:
+    path:     /
+    defaults: { _controller: P6PlatformBundle:Default:index }
+
+p6_test:
+    path:     /test
+    defaults: { _controller: P6PlatformBundle:Default:test }
