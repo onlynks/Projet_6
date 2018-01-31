@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4bf569b-4ac7-4666-9dfb-04135a93e23c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a4bf569b-4ac7-4666-9dfb-04135a93e23c" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,10 +14,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Figure.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Figure.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/P6/PlatformBundle/Entity/Figure.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-816">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="image.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/P6/PlatformBundle/Entity/image.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -195,7 +202,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11848000" />
+    <option name="totallyTimeSpent" value="13055000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="81" y="22" width="1400" height="820" extended-state="0" />
@@ -438,7 +445,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/P6/PlatformBundle/Entity/Figure.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-816">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/P6/PlatformBundle/Entity/image.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
