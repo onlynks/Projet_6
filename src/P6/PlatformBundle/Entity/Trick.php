@@ -3,14 +3,15 @@
 namespace P6\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Figure
+ * Trick
  *
- * @ORM\Table(name="figure")
- * @ORM\Entity(repositoryClass="P6\PlatformBundle\Repository\FigureRepository")
+ * @ORM\Table(name="trick")
+ * @ORM\Entity(repositoryClass="P6\PlatformBundle\Repository\TrickRepository")
  */
-class Figure
+class Trick
 {
     /**
      * @var int
@@ -24,31 +25,55 @@ class Figure
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
-     * @var int
+     * @var
      *
-     * @ORM\Column(name="group_id", type="integer", nullable=true)
+     * @ORM\ManyToMany(targetEntity="P6\PlatformBundle\Entity\Category", inversedBy="trick")
+     * @ORM\JoinTable(name="tricks_categories")
      */
-    private $groupId;
+    private $category;
+
+
+
+
+        public function __construct()
+    {
+        $this->$category = new ArrayCollection();
+    }
+    /**
+     * @return array() $category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="video_id", type="integer", nullable=true)
+     * @param Category $category
      */
-    private $videoId;
+    public function addCategory(Category $category)
+    {
+        $this->category[] = $category;
+    }
 
+    /**
+     * @param Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+       $this->categories->removeElement($category);
+    }
 
     /**
      * Get id
@@ -65,7 +90,7 @@ class Figure
      *
      * @param string $name
      *
-     * @return Figure
+     * @return Trick
      */
     public function setName($name)
     {
@@ -89,7 +114,7 @@ class Figure
      *
      * @param string $description
      *
-     * @return Figure
+     * @return Trick
      */
     public function setDescription($description)
     {
@@ -106,54 +131,6 @@ class Figure
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set groupId
-     *
-     * @param integer $groupId
-     *
-     * @return Figure
-     */
-    public function setGroupId($groupId)
-    {
-        $this->groupId = $groupId;
-
-        return $this;
-    }
-
-    /**
-     * Get groupId
-     *
-     * @return int
-     */
-    public function getGroupId()
-    {
-        return $this->groupId;
-    }
-
-    /**
-     * Set videoId
-     *
-     * @param integer $videoId
-     *
-     * @return Figure
-     */
-    public function setVideoId($videoId)
-    {
-        $this->videoId = $videoId;
-
-        return $this;
-    }
-
-    /**
-     * Get videoId
-     *
-     * @return int
-     */
-    public function getVideoId()
-    {
-        return $this->videoId;
     }
 }
 
