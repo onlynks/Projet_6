@@ -30,7 +30,7 @@ class Category
     private $name;
 
     /**
-     * @var
+     * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="P6\PlatformBundle\Entity\Trick", mappedBy="category")
      */
@@ -38,10 +38,11 @@ class Category
 
     public function __construct()
     {
-        $this->$trick = new ArrayCollection();
+        //$this->$trick = new ArrayCollection();
     }
+
     /**
-     * @return array() $trick
+     * @return ArrayCollection $trick
      */
     public function getTrick()
     {
