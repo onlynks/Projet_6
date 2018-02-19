@@ -49,7 +49,7 @@ class Trick
 
         public function __construct()
     {
-        $this->$category = new ArrayCollection();
+        $this->category = new ArrayCollection();
     }
     /**
      * @return array() $category

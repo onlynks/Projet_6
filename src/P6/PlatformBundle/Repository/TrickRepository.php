@@ -1,5 +1,7 @@
 <?php
 
+use Doctrine\ORM\EntityRepository;
+
 namespace P6\PlatformBundle\Repository;
 
 /**
@@ -10,4 +12,14 @@ namespace P6\PlatformBundle\Repository;
  */
 class TrickRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByCategory($category)
+    {
+        $queryBuilder = $this->createQueryBuilder("t")
+            ->where("t.category = :category")
+            ->setParameter("category", $category);
+        $query = $queryBuilder->getQuery();
+        $results = $query->getResult();
+        return $results;
+
+    }
 }

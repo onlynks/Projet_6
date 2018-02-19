@@ -1,6 +1,6 @@
 p6_platform:
-    resource: "@P6PlatformBundle/Resources/config/routing.yml"
-    prefix:   /
+    resource: "@P6PlatformBundle/Controller/"
+    type: annotation
 
 app:
     resource: '@AppBundle/Controller/'

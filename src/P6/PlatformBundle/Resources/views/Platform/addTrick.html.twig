@@ -1,0 +1,12 @@
+{% extends "layout.html.twig" %}
+
+{% block header %}{{ parent() }} - Modification{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+
