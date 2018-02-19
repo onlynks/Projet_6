@@ -1,16 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bienvenue sur ma première page avec OpenClassrooms !</title>
-</head>
-<body>
-<h1>Hello World !</h1>
+{% extends "layout.html.twig" %}
 
-<p>
-    Le Hello World est un grand classique en programmation.
-    Il signifie énormément, car cela veut dire que vous avez
-    réussi à exécuter le programme pour accomplir une tâche simple :
-    afficher ce hello world !
-</p>
-</body>
-</html>
+{% block header %}{{ parent() }} - Homepage{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+
+            {% for category in listCategories %}
+                <div class="col-md-4">
+
+                    <div class="card mb-4 box-shadow">
+
+                            <h2>{{ category.name }}</h2>
+                                <div class="card-body">
+                                    {% for trick in category.trick %}
+                                        {% if loop.index<4 %}
+                                        <p class="card-text">
+                                            <a href="{{ path('p6_onetrick', {'id': trick.id}) }}">{{ trick.name }}</a>
+                                            {{ trick.description }}
+                                        </p>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+                                </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

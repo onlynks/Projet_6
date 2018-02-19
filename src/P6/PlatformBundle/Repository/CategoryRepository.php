@@ -10,4 +10,15 @@ namespace P6\PlatformBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findTricksLimited()
+    {
+
+
+        $queryBuilder = $this->createQueryBuilder("category")
+            ->where("category.trick = :trick")
+            ->setParameter("category", $category);
+        $query = $queryBuilder->getQuery();
+        $results = $query->getResult();
+        return $results;
+    }
 }

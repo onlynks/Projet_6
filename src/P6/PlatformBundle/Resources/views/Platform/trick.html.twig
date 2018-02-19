@@ -1,0 +1,17 @@
+{% extends "layout.html.twig" %}
+
+{% block header %}{{ parent() }} - Figure{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-3">{{ trick.name }}</h1>
+            <p class="lead">{{ trick.description }}</p>
+            <p><a class="btn btn-lg btn-success" href="{{ path('p6_updateTrick', {'id': trick.id}) }}" role="button">Modifier la figure</a></p>
+        </div>
+    </div>
+
+
+{% endblock %}
+

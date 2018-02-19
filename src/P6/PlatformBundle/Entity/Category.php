@@ -28,7 +28,7 @@ class Category
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
-
+    
     /**
      * @var ArrayCollection
      *
@@ -38,7 +38,7 @@ class Category
 
     public function __construct()
     {
-        //$this->$trick = new ArrayCollection();
+        $this->trick = new ArrayCollection();
     }
 
     /**
