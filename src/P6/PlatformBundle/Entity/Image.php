@@ -3,6 +3,7 @@
 namespace P6\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Image
@@ -39,6 +40,7 @@ class Image
      * @var Trick $trick
      *
      * @ORM\ManyToOne(targetEntity="P6\PlatformBundle\Entity\Trick")
+     * @Assert\Type(type="file")
      */
     private $trick;
 

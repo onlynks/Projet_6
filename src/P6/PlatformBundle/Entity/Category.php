@@ -4,6 +4,7 @@ namespace P6\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
@@ -26,6 +27,8 @@ class Category
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Assert\Type(type="string")
+     * @Assert\Length(max=100)
      */
     private $name;
     
@@ -33,6 +36,7 @@ class Category
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="P6\PlatformBundle\Entity\Trick", mappedBy="category")
+     * @Assert\Valid()
      */
     private $trick;
 

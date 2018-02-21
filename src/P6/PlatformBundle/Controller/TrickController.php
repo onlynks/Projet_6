@@ -2,9 +2,8 @@
 
 namespace P6\PlatformBundle\Controller;
 
-
-use P6\PlatformBundle\Entity\Category;
 use P6\PlatformBundle\Entity\Trick;
+use P6\PlatformBundle\Form\TrickType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -105,11 +104,7 @@ class TrickController extends Controller
     {
         $trick = new Trick();
 
-        $form = $this->createFormBuilder($trick)
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('Enregistrer',      SubmitType::class)
-            ->getForm();
+        $form = $this->get('form.factory')->create(TrickType::class, $trick);
 
         if($request->isMethod('POST'))
         {

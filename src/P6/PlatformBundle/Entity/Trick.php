@@ -4,6 +4,7 @@ namespace P6\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Trick
@@ -26,6 +27,7 @@ class Trick
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -33,6 +35,8 @@ class Trick
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank()
+     * @Assert\Type(type="string", message="La description de la figure doit être de type {{ type }}.")
      */
     private $description;
 
@@ -41,6 +45,7 @@ class Trick
      *
      * @ORM\ManyToMany(targetEntity="P6\PlatformBundle\Entity\Category", inversedBy="trick")
      * @ORM\JoinTable(name="tricks_categories")
+     * @Assert\Valid()
      */
     private $category;
 
