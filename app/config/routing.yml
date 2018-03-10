@@ -2,6 +2,3 @@ p6_platform:
     resource: "@P6PlatformBundle/Controller/"
     type: annotation
 
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation

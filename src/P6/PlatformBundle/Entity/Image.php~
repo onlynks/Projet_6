@@ -3,6 +3,7 @@
 namespace P6\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Image
@@ -26,19 +27,21 @@ class Image
      *
      * @ORM\Column(name="url", type="string", length=255)
      */
-    private $url;
+    private $file;
 
     /**
      * @var string
      *
      * @ORM\Column(name="alt", type="string", length=255)
      */
-    private $alt;
+    private $fileName;
 
     /**
      * @var Trick $trick
      *
-     * @ORM\ManyToOne(targetEntity="P6\PlatformBundle\Entity\Trick")
+     * @ORM\ManyToOne(targetEntity="Trick", inversedBy="images")
+     *
+     * @Assert\Type(type="file")
      */
     private $trick;
 
@@ -53,51 +56,74 @@ class Image
     }
 
     /**
-     * Set url
+     * Set trick
      *
-     * @param string $url
+     * @param \P6\PlatformBundle\Entity\Trick $trick
      *
      * @return Image
      */
-    public function setUrl($url)
+    public function setTrick(\P6\PlatformBundle\Entity\Trick $trick = null)
     {
-        $this->url = $url;
+        $this->trick = $trick;
 
         return $this;
     }
 
     /**
-     * Get url
+     * Get trick
      *
-     * @return string
+     * @return \P6\PlatformBundle\Entity\Trick
      */
-    public function getUrl()
+    public function getTrick()
     {
-        return $this->url;
+        return $this->trick;
     }
 
     /**
-     * Set alt
+     * Set file
      *
-     * @param string $alt
+     * @param string $file
      *
      * @return Image
      */
-    public function setAlt($alt)
+    public function setFile($file)
     {
-        $this->alt = $alt;
+        $this->file = $file;
 
         return $this;
     }
 
     /**
-     * Get alt
+     * Get file
      *
      * @return string
      */
-    public function getAlt()
+    public function getFile()
     {
-        return $this->alt;
+        return $this->file;
+    }
+
+    /**
+     * Set fileName
+     *
+     * @param string $fileName
+     *
+     * @return Image
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * Get fileName
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
     }
 }
-

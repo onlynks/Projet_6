@@ -1,0 +1,64 @@
+<div class="well">
+
+
+    {{ form_row(form.images) }}
+    <a href="#" id="add_image" class="btn btn-default">Ajouter une image</a>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var $container = $('div#p6_platformbundle_trick_images');
+
+        var index = $container.find(':input').length;
+
+        $('#add_image').click(function(e) {
+            addImage($container);
+
+            e.preventDefault();
+            return false;
+        });
+
+        if (index == 0) {
+            addImage($container);
+        } else {
+
+            $container.children('div').each(function() {
+                addDeleteLink($(this));
+            });
+        }
+
+        function addImage($container) {
+
+            var template = $container.attr('data-prototype')
+                .replace(/__name__label__/g, 'Image n°' + (index+1))
+                .replace(/__name__/g,        index)
+            ;
+
+            var $prototype = $(template);
+
+            addDeleteLink($prototype);
+
+            $container.append($prototype);
+
+            index++;
+        }
+
+        function addDeleteLink($prototype) {
+
+            var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+            $prototype.append($deleteLink);
+
+            $deleteLink.click(function(e) {
+                $prototype.remove();
+
+                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                return false;
+            });
+        }
+    });
+</script>
+
+<div id="p6_platformbundle_trick_images" data-prototype="<div class=&quot;form-group&quot;><label class=&quot;control-label required&quot;>__name__label__</label><div id=&quot;p6_platformbundle_trick_images___name__&quot;><div class=&quot;form-group&quot;><label class=&quot;control-label required&quot; for=&quot;p6_platformbundle_trick_images___name___url&quot;>Url</label><input type=&quot;file&quot; id=&quot;p6_platformbundle_trick_images___name___url&quot; name=&quot;p6_platformbundle_trick[images][__name__][url][]&quot; required=&quot;required&quot; multiple=&quot;multiple&quot; /></div></div></div>"></div>

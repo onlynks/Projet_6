@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use P6\PlatformBundle\Service\FileUploader;
 
 
 
@@ -23,7 +24,7 @@ class TrickController extends Controller
 
 
     /**
-     * @Route ("/homepage", name="p6_homepage")
+     * @Route ("/", name="p6_homepage")
      * @return Response
      */
     public function homepageAction()
@@ -106,20 +107,30 @@ class TrickController extends Controller
 
         $form = $this->get('form.factory')->create(TrickType::class, $trick);
 
-        if($request->isMethod('POST'))
+
+        $form->handleRequest($request);
+
+        if($form->isValid())
         {
-            $form->handleRequest($request);
+            $images = $form['images']->getNormData();
 
-            if($form->isValid())
+            $fileUploader = $this->get('image.uploader');
+
+            foreach ($images as $image)
             {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
-
-                $content = $this->redirectToRoute('p6_onetrick', array('id' => $trick->getId()));
-                return new Response($content);
+                $name = $fileUploader->upload($image->getFIle());
+                $image->setTrick($trick);
+                $image->setFile($name);
             }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($trick);
+            $em->flush();
+
+            $content = $this->redirectToRoute('p6_onetrick', array('id' => $trick->getId()));
+            return new Response($content);
         }
+
 
         $content = $this->renderView('@P6Platform/Platform/addTrick.html.twig', array(
             'form' => $form->createView(),
