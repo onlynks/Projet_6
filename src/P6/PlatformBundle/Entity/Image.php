@@ -3,6 +3,7 @@
 namespace P6\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Image
@@ -24,21 +25,17 @@ class Image
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255)
+     * @ORM\Column(name="file", type="string", length=255)
      */
-    private $url;
+    private $file;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="alt", type="string", length=255)
-     */
-    private $alt;
 
     /**
      * @var Trick $trick
      *
-     * @ORM\ManyToOne(targetEntity="P6\PlatformBundle\Entity\Trick")
+     * @ORM\ManyToOne(targetEntity="Trick", inversedBy="images")
+     *
+     * @Assert\Type(type="file")
      */
     private $trick;
 
@@ -50,54 +47,6 @@ class Image
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set url
-     *
-     * @param string $url
-     *
-     * @return Image
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * Set alt
-     *
-     * @param string $alt
-     *
-     * @return Image
-     */
-    public function setAlt($alt)
-    {
-        $this->alt = $alt;
-
-        return $this;
-    }
-
-    /**
-     * Get alt
-     *
-     * @return string
-     */
-    public function getAlt()
-    {
-        return $this->alt;
     }
 
     /**
@@ -123,4 +72,29 @@ class Image
     {
         return $this->trick;
     }
+
+    /**
+     * Set file
+     *
+     * @param string $file
+     *
+     * @return Image
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
 }
