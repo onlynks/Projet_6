@@ -12,8 +12,8 @@
 <body>
 
     <h1 class="display-4 mx-auto" style="width: 200px;">SnowTricks</h1>
-
-    {{ include('menu.html.twig') }}
+    <img src="{{ images_path }}/image_fond.jpg" alt="test" />
+    {{ render(controller("P6PlatformBundle:Trick:menu")) }}
 
     <div class="container">
     {% block body %}

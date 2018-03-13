@@ -41,7 +41,7 @@ services:
     image.uploader:
         class: P6\PlatformBundle\Service\FileUploader
         arguments:
-           $targetDir: %target_directory%
+           $targetDir: '%target_directory%'
         public: true
 
 
