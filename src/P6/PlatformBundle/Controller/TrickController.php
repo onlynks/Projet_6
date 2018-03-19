@@ -3,6 +3,7 @@
 namespace P6\PlatformBundle\Controller;
 
 use P6\PlatformBundle\Entity\Trick;
+use P6\PlatformBundle\Form\MessageType;
 use P6\PlatformBundle\Form\TrickType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -52,9 +53,8 @@ class TrickController extends Controller
 
         $trick = $em->getRepository('P6PlatformBundle:Trick')->find($id);
 
-
         $content = $this->renderView('@P6Platform/Platform/trick.html.twig', array(
-            'trick'=>$trick
+            'trick'=> $trick,
         ));
 
         return new Response($content);
@@ -166,6 +166,41 @@ class TrickController extends Controller
         $em->flush();
 
         return new Response("Categories added");
+    }
+
+    /**
+     * @Route ("/category/{id}", name="p6_category")
+     * @return Response
+     */
+    public function oneCategoryAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $category = $em->getRepository('P6PlatformBundle:Category')->find($id);
+
+        $tricks = $em->getRepository('P6PlatformBundle:Trick')->findAll();
+
+        $content = $this->renderView('@P6Platform/Platform/category.html.twig', array(
+            'category' => $category,
+            'tricks' => $tricks
+        ));
+
+        return new Response($content);
+    }
+
+
+    public function menuAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $categories = $em->getRepository('P6PlatformBundle:Category')->findAll();
+
+        $content = $this->renderView('menu.html.twig', array(
+            'categories' => $categories
+        ));
+
+        return new Response($content);
+
     }
 }
 

@@ -12,6 +12,12 @@
         </div>
     </div>
 
+    {% for images in trick.images %}
+        <img src="{{ asset("Images/"~images.file)  }}"/>
+    {% endfor %}
+
+
+
 
 {% endblock %}
 

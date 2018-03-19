@@ -1,0 +1,47 @@
+{% extends "layout.html.twig" %}
+
+{% block header %}{{ parent() }} - {{ category.name }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+
+        {% for trick in tricks %}
+            {% for image in trick.images %}
+
+            <div class="card-deck col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="{{ images_path }}/{{ image.file }}" alt="Card image trick">
+                    <div class="card-body">
+                        <a href="{{ path('p6_onetrick', {'id': trick.id}) }}"><h5 class="card-title">{{ trick.name }}</h5></a>
+                        <p class="card-text">{{ trick.description }}</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        {% endfor %}
+
+    </div>
+</div>
+
+{#
+
+<img src="{{asset(images_path~'/'~image.file) }}" alt="test" /> ///// <img src="{{ images_path }}/{{ image.file }}" alt="test" />
+
+
+    <img src="a9fa8a1d0dd783823e658bf5d658dcd1.jpeg" alt="test"/>
+    <img src="telechargement.jpeg" alt="test"/>
+#}
+
+
+{% endblock %}
+
+{% for trick in tricks %}
+    {% for image in trick.images %}
+
+
+
+    {% endfor %}
+{% endfor %}

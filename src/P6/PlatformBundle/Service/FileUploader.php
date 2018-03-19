@@ -39,5 +39,13 @@ class FileUploader
         }
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTargetDir()
+    {
+        return $this->targetDir;
+    }
 }
 

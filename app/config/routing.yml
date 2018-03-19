@@ -2,3 +2,16 @@ p6_platform:
     resource: "@P6PlatformBundle/Controller/"
     type: annotation
 
+#p6_user:
+ #   resource: "@P6UserBundle/Resources/config/routing.yml"
+  #  prefix:   /
+
+p6_user:
+  resource: "@P6UserBundle/Controller/"
+  type: annotation
+
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout

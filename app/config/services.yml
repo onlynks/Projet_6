@@ -38,10 +38,14 @@ services:
             resource: '../../src/P6/PlatformBundle/DataFixtures'
             tags: ['doctrine.fixture.orm']
 
+    P6\UserBundle\DataFixtures\:
+                resource: '../../src/P6/UserBundle/DataFixtures'
+                tags: ['doctrine.fixture.orm']
+
     image.uploader:
         class: P6\PlatformBundle\Service\FileUploader
         arguments:
-           $targetDir: %target_directory%
+           $targetDir: '%target_directory%'
         public: true
 
 

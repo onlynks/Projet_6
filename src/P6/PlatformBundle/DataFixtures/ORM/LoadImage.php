@@ -12,8 +12,7 @@ class LoadImage implements FixtureInterface
     {
         for ($i = 0; $i < 20; $i++) {
             $image = new Image();
-            $image->setUrl('url '.$i);
-            $image->setAlt('alt '.$i);
+            $image->setFile('file '.$i);
             $manager->persist($image);
         }
 

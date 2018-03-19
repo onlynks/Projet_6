@@ -1,13 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="{{ path('p6_homepage')}}">Accueil</a>
 
 
     <div class="collapse navbar-collapse" id="navbarColor01">
+
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('p6_addtrick')}}">Ajouter une figure <span class="sr-only">(current)</span></a>
-            </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Catégories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        {% for category in categories %}
+                            <a class="dropdown-item" href="{{ path('p6_category', {'id': category.id}) }}">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('p6_addtrick')}}">Ajouter une figure <span class="sr-only">(current)</span></a>
+                </li>
+
         </ul>
+        <div class="form-inline my-2 my-lg-0">
+            <a class="btn btn-light" href="{{ path("login") }}">Identification </a>
+
+
+        </div>
+
 
     </div>
 </nav>
