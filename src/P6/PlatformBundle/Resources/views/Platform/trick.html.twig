@@ -12,7 +12,10 @@
         </div>
     </div>
 
-    {{ form_row(form.content, {'label':'Votre message'}) }}
+    {% for images in trick.images %}
+        <img src="{{ asset("Images/"~images.file)  }}"/>
+    {% endfor %}
+
 
 
 

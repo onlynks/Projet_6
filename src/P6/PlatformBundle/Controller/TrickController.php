@@ -53,12 +53,8 @@ class TrickController extends Controller
 
         $trick = $em->getRepository('P6PlatformBundle:Trick')->find($id);
 
-        $form = $this->get('form.factory')->create(MessageType::class);
-
         $content = $this->renderView('@P6Platform/Platform/trick.html.twig', array(
             'trick'=> $trick,
-            'form' => $form->createView(),
-
         ));
 
         return new Response($content);
