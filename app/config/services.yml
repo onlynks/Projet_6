@@ -48,4 +48,16 @@ services:
            $targetDir: '%target_directory%'
         public: true
 
+    remove.trick.images:
+        class: P6\PlatformBundle\DoctrineListener\TrickRemoveListener
+        arguments:
+          $ImageEraser: "@delete.image"
+        tags:
+          - { name: doctrine.event_listener, event: postRemove }
+
+    delete.image:
+        class: P6\PlatformBundle\Service\ImageEraser
+        arguments:
+           $targetDir: '%target_directory%'
+
 

@@ -7,11 +7,13 @@
     <div class="row">
 
         {% for trick in tricks %}
-            {% for image in trick.images %}
+
 
             <div class="card-deck col-md-4">
                 <div class="card">
-                    <img class="card-img-top" src="{{ images_path }}/{{ image.file }}" alt="Card image trick">
+                    {% for image in trick.images %}
+                        <img class="card-img-top" src="{{ asset("Images/"~image.file) }}" alt="Card image trick">
+                    {% endfor %}
                     <div class="card-body">
                         <a href="{{ path('p6_onetrick', {'id': trick.id}) }}"><h5 class="card-title">{{ trick.name }}</h5></a>
                         <p class="card-text">{{ trick.description }}</p>
@@ -20,7 +22,7 @@
                 </div>
             </div>
 
-            {% endfor %}
+
         {% endfor %}
 
     </div>

@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="trick")
  * @ORM\Entity(repositoryClass="P6\PlatformBundle\Repository\TrickRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Trick
 {
@@ -52,7 +53,7 @@ class Trick
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="P6\PlatformBundle\Entity\Image", mappedBy="trick", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="P6\PlatformBundle\Entity\Image", mappedBy="trick", cascade={"persist", "remove"})
      *
      */
     private $images;

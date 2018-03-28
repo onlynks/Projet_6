@@ -8,7 +8,11 @@
         <div class="jumbotron">
             <h1 class="display-3">{{ trick.name }}</h1>
             <p class="lead">{{ trick.description }}</p>
-            <p><a class="btn btn-lg btn-success" href="{{ path('p6_updateTrick', {'id': trick.id}) }}" role="button">Modifier la figure</a></p>
+            <a class="btn btn-lg btn-success" href="{{ path('p6_updateTrick', {'id': trick.id}) }}" role="button">Modifier la figure</a>
+            {% if is_granted('ROLE_USER') %}
+                <a class="btn btn-lg btn-success" href="{{ path('p6_deleteTrick', {'id': trick.id}) }}" role="button">Supprimer la figure</a>
+            {% endif %}
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/5QJu0MbbTnk" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 

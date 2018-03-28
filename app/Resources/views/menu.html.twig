@@ -22,11 +22,29 @@
                 </li>
 
         </ul>
-        <div class="form-inline my-2 my-lg-0">
-            <a class="btn btn-light" href="{{ path("login") }}">Identification </a>
+
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('logout') }}">Déconnexion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light" href="">{{ user.username }}</a>
+                </li>
 
 
-        </div>
+            </ul>
+        {% else %}
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path("login") }}">Identification</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path("p6_registration") }}">Inscription</a>
+                </li>
+            </ul>
+        {% endif %}
+
 
 
     </div>

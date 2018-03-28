@@ -34,8 +34,10 @@ security:
               check_path: login_check
             logout:
               path: logout
-              target: login
+              target: /
 
+    access_control:
+        - { path: ^/delete, roles: ROLE_ADMIN }
 
 
             # activate different ways to authenticate
