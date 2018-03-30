@@ -58,6 +58,20 @@ class Trick
      */
     private $images;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="P6\PlatformBundle\Entity\Video", mappedBy="trick", cascade={"persist", "remove"})
+     *
+     */
+    private $videos;
+
+    /**
+     * @ORM\OneToMany(targetEntity="P6\PlatformBundle\Entity\Message", mappedBy="trick", cascade={"remove"})
+     */
+    private $message;
+
+
 
 
 
@@ -65,6 +79,8 @@ class Trick
     {
         $this->category = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->videos = new ArrayCollection();
+        $this->message = new ArrayCollection();
     }
     /**
      * @return array() $category
@@ -181,4 +197,47 @@ class Trick
     {
         return $this->images;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * Add Video
+     *
+     * @param \P6\PlatformBundle\Entity\Video $video
+     *
+     * @return Trick
+     */
+    public function addVideo(Video $video)
+    {
+        $this->videos[] = $video;
+
+        return $this;
+    }
+
+    /**
+     * Remove video
+     *
+     * @param \P6\PlatformBundle\Entity\Video $video
+     */
+    public function removeVideo(Video $video)
+    {
+        $this->videos->removeElement($video);
+    }
+
+    /**
+     * Get Videos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVideos()
+    {
+        return $this->videos;
+    }
+
 }

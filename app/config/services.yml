@@ -32,7 +32,7 @@ services:
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:
-    #         $someArgument: 'some_value'
+    #         $someArgument: 'some_value'composer require twig/extensions
 
     P6\PlatformBundle\DataFixtures\:
             resource: '../../src/P6/PlatformBundle/DataFixtures'
@@ -60,4 +60,6 @@ services:
         arguments:
            $targetDir: '%target_directory%'
 
-
+    IDBuilder:
+        class: P6\PlatformBundle\Service\IDBuilder
+        public: true

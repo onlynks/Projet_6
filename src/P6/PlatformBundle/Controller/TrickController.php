@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use P6\PlatformBundle\Entity\Message;
 
 
 
@@ -47,20 +48,35 @@ class TrickController extends Controller
      * @Route ("/trick/{id}", name="p6_onetrick")
      * @return Response
      */
-    public function oneTrickAction($id)
+    public function oneTrickAction(Request $request, $id)
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $trick = $em->getRepository('P6PlatformBundle:Trick')->find($id);
 
+        $message = new Message();
+        $form = $this->get('form.factory')->create(MessageType::class, $message);
+
+        if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
+        {
+            $user = $this->getUser();
+            $message->setTrick($trick)->setUser($user);
+            $form->handleRequest($request);
+
+            if($form->isValid())
+            {
+                $em->persist($message);
+                $em->flush();
+            }
+        }
+
+
+
         $content = $this->renderView('@P6Platform/Platform/trick.html.twig', array(
             'trick'=> $trick,
+            'form' => $form->createView()
         ));
-
-$url = "https://www.youtube.com/watch?v=5QJu0MbbTnk";
-parse_str( parse_url( $url, PHP_URL_QUERY ), $my_array_of_vars );
-echo $my_array_of_vars['v'];
-  // Output: C4kxS1ksqtw
 
         return new Response($content);
 
@@ -118,7 +134,6 @@ echo $my_array_of_vars['v'];
         if($form->isValid())
         {
             $images = $form['images']->getNormData();
-
             $fileUploader = $this->get('image.uploader');
 
             foreach ($images as $image)
@@ -126,6 +141,17 @@ echo $my_array_of_vars['v'];
                 $name = $fileUploader->upload($image->getFIle());
                 $image->setTrick($trick);
                 $image->setFile($name);
+            }
+
+            $videos = $form['videos']->getNormData();
+            $IDBuilder = $this->get('IDBuilder');
+
+            foreach ($videos as $video)
+            {
+                var_dump($video);
+                $link = $IDBuilder->extractID($video->getUrl());
+                $video->setTrick($trick);
+                $video->setUrl($link);
             }
 
             $em = $this->getDoctrine()->getManager();

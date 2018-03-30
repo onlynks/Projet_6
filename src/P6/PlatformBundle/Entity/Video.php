@@ -3,6 +3,7 @@
 namespace P6\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Video
@@ -22,16 +23,24 @@ class Video
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="url", type="string", length=255)
+     * @ORM\Column(name="url", type="string", length=255)     *
+     * @Assert\Regex(
+     *     pattern="#^(http|https)://(www.youtube.com)/#",
+     *     match=true,
+     *     message="L'url doit correspondre à l'url d'une vidéo Youtube"
+     * )
      */
     private $url;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Trick")
+     * @var \stdClass
+     *
+     * @ORM\ManyToOne(targetEntity="Trick", inversedBy="videos")
      */
     private $trick;
+
 
     /**
      * Get id
@@ -46,7 +55,7 @@ class Video
     /**
      * Set url
      *
-     * @param string $url
+     * @param integer $url
      *
      * @return Video
      */
@@ -60,7 +69,7 @@ class Video
     /**
      * Get url
      *
-     * @return string
+     * @return int
      */
     public function getUrl()
     {
@@ -68,21 +77,27 @@ class Video
     }
 
     /**
-     * @return Trick
+     * Set trick
+     *
+     * @param \stdClass $trick
+     *
+     * @return Video
+     */
+    public function setTrick($trick)
+    {
+        $this->trick = $trick;
+
+        return $this;
+    }
+
+    /**
+     * Get trick
+     *
+     * @return \stdClass
      */
     public function getTrick()
     {
         return $this->trick;
     }
-
-    /**
-     * @param Trick $trick
-     */
-    public function setTrick(Trick $trick)
-    {
-        $this->trick = $trick;
-    }
-
-
 }
 
