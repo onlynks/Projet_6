@@ -9,7 +9,7 @@
             <h1 class="display-3">{{ trick.name }}</h1>
             <p class="lead">{{ trick.description }}</p>
             <a class="btn btn-lg btn-success" href="{{ path('p6_updateTrick', {'id': trick.id}) }}" role="button">Modifier la figure</a>
-            {% if is_granted('ROLE_USER') %}
+            {% if is_granted('ROLE_ADMIN') %}
                 <a class="btn btn-lg btn-success" href="{{ path('p6_deleteTrick', {'id': trick.id}) }}" role="button">Supprimer la figure</a>
             {% endif %}
             <iframe width="560" height="315" src="https://www.youtube.com/embed/5QJu0MbbTnk" frameborder="0" allowfullscreen></iframe>
@@ -20,7 +20,23 @@
         <img src="{{ asset("Images/"~images.file)  }}"/>
     {% endfor %}
 
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
 
+    {{ form_row(form.content, {'label':'Votre Message'}) }}
+
+    <button type="submit" class="btn btn-primary" formnovalidate>Poster</button>
+    {{ form_end(form) }}
+
+
+    <ul class="list-group list-group-flush">
+        {% for message in trick.message %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="px-5">{{ message.content }}</div>
+                <span class="badge badge-primary badge-pill ">{{ message.date|date("m/d/Y - H:i") }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 
 
 {% endblock %}
