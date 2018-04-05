@@ -12,13 +12,63 @@
             {% if is_granted('ROLE_ADMIN') %}
                 <a class="btn btn-lg btn-success" href="{{ path('p6_deleteTrick', {'id': trick.id}) }}" role="button">Supprimer la figure</a>
             {% endif %}
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/5QJu0MbbTnk" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 
-    {% for images in trick.images %}
-        <img src="{{ asset("Images/"~images.file)  }}"/>
-    {% endfor %}
+
+    <div id="ThumbnailCarousel" class="carousel slide col-xs-12" {#data-ride="carousel"#}>
+        <div class="carousel-inner">
+            {% for items in carousel %}
+                {% if loop.index == 1 %}
+                    <div class="carousel-item active">
+                        <div class="row">
+                            {% for unit in items %}
+                                {% if unit.isVideo == true %}
+                                    <div class="col-md-3"><a href="{{ asset(unit.media) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media) }}" frameborder="0" allowfullscreen></iframe></a>
+                                        <a href="{{ path('p6_deleteMedia', {'type':}) }}"><div class="hover_delete"></div></a>
+                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                    </div>
+                                {% else %}
+                                    <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media) }}" alt="Image" class="img-fluid img-thumbnail"></a>
+                                        <a href="{{ path('p6_deleteMedia') }}"><div class="hover_delete"></div></a>
+                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="carousel-item">
+                        <div class="row">
+                            {% for unit in items %}
+                                {% if unit.isVideo == true %}
+                                    <div class="col-md-3"><a href="{{ asset(unit.media) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media) }}" frameborder="0" allowfullscreen></iframe></a>
+                                        <a href="{{ path('p6_deleteMedia') }}"><div class="hover_delete"></div></a>
+                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                    </div>
+                                {% else %}
+                                    <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media) }}" alt="Image" class="img-fluid img-thumbnail"></a>
+                                        <a href="{{ path('p6_deleteMedia') }}"><div class="hover_delete"></div></a>
+                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#ThumbnailCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#ThumbnailCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
 
     {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -28,7 +78,6 @@
     <button type="submit" class="btn btn-primary" formnovalidate>Poster</button>
     {{ form_end(form) }}
 
-
     <ul class="list-group list-group-flush">
         {% for message in trick.message %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -37,7 +86,14 @@
             </li>
         {% endfor %}
     </ul>
+<div class="row">
 
 
-{% endblock %}
+
+
+    {#
+        <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media) }}" alt="Image" class="img-fluid img-thumbnail"></a>
+        </div>
+        #}
+    {% endblock %}
 

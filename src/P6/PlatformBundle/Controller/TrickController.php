@@ -71,11 +71,46 @@ class TrickController extends Controller
             }
         }
 
+        if(!$trick->getImages()->isEmpty() || !$trick->getVideos()->isEmpty())
+        {
+            $templateBuilder = $this->get('template.builder');
 
+            if(!$trick->getImages()->isEmpty())
+            {
+                $images = $trick->getImages();
+                foreach($images as $image)
+                {
+                    $files[]  = $image->getFile();
+                }
+            }
+            else
+            {
+                $files = null;
+            }
+            if(!$trick->getVideos()->isEmpty())
+            {
+                $videos = $trick->getVideos();
+                foreach($videos as $video)
+                {
+                    $urls[]  = $video->getUrl();
+                }
+            }
+            else
+            {
+                $urls = null;
+            }
+
+            $carousel = $templateBuilder->displayMedias($files, $urls, 4);
+        }
+        else
+        {
+            $carousel = null;
+        }
 
         $content = $this->renderView('@P6Platform/Platform/trick.html.twig', array(
             'trick'=> $trick,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'carousel' => $carousel
         ));
 
         return new Response($content);
@@ -114,6 +149,7 @@ class TrickController extends Controller
 
         $content = $this->renderView('@P6Platform/Platform/updateTrick.html.twig', array(
             'form' => $form->createView(),
+            'trick' => $trick
         ));
         return new Response($content);
     }
@@ -134,24 +170,30 @@ class TrickController extends Controller
         if($form->isValid())
         {
             $images = $form['images']->getNormData();
-            $fileUploader = $this->get('image.uploader');
-
-            foreach ($images as $image)
+            if(!$images->isEmpty())
             {
-                $name = $fileUploader->upload($image->getFIle());
-                $image->setTrick($trick);
-                $image->setFile($name);
+                $fileUploader = $this->get('image.uploader');
+
+                foreach ($images as $image)
+                {
+                    $name = $fileUploader->upload($image->getFIle());
+                    $image->setTrick($trick);
+                    $image->setFile($name);
+                }
             }
 
             $videos = $form['videos']->getNormData();
-            $IDBuilder = $this->get('IDBuilder');
 
-            foreach ($videos as $video)
+            if(!$videos->isEmpty())
             {
-                var_dump($video);
-                $link = $IDBuilder->extractID($video->getUrl());
-                $video->setTrick($trick);
-                $video->setUrl($link);
+                $IDBuilder = $this->get('IDBuilder');
+
+                foreach ($videos as $video)
+                {
+                    $link = $IDBuilder->extractID($video->getUrl());
+                    $video->setTrick($trick);
+                    $video->setUrl($link);
+                }
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -259,6 +301,11 @@ class TrickController extends Controller
         $em->flush();
 
         return new Response($this->redirectToRoute('p6_homepage'));
+    }
+
+    public function deleteMedia($type, $id)
+    {
+
     }
 }
 

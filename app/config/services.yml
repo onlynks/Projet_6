@@ -63,3 +63,9 @@ services:
     IDBuilder:
         class: P6\PlatformBundle\Service\IDBuilder
         public: true
+
+    template.builder:
+        class: P6\PlatformBundle\Service\TemplateBuilder
+        arguments:
+                   $path: '%target_directory%'
+        public: true
