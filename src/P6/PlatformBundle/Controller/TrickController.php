@@ -48,7 +48,7 @@ class TrickController extends Controller
      * @Route ("/trick/{id}", name="p6_onetrick")
      * @return Response
      */
-    public function oneTrickAction(Request $request, $id)
+    public function oneTrickAction($id, $request = null)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -58,7 +58,7 @@ class TrickController extends Controller
         $message = new Message();
         $form = $this->get('form.factory')->create(MessageType::class, $message);
 
-        if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
+        if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')&& $request !== null)
         {
             $user = $this->getUser();
             $message->setTrick($trick)->setUser($user);
@@ -80,7 +80,7 @@ class TrickController extends Controller
                 $images = $trick->getImages();
                 foreach($images as $image)
                 {
-                    $files[]  = $image->getFile();
+                    $files[]  = $image;
                 }
             }
             else
@@ -92,7 +92,7 @@ class TrickController extends Controller
                 $videos = $trick->getVideos();
                 foreach($videos as $video)
                 {
-                    $urls[]  = $video->getUrl();
+                    $urls[]  = $video;
                 }
             }
             else
@@ -109,8 +109,8 @@ class TrickController extends Controller
 
         $content = $this->renderView('@P6Platform/Platform/trick.html.twig', array(
             'trick'=> $trick,
-            'form' => $form->createView(),
-            'carousel' => $carousel
+            'carousel' => $carousel,
+            'form' => $form->createView()
         ));
 
         return new Response($content);
@@ -291,7 +291,7 @@ class TrickController extends Controller
      * @Route ("delete/{id}", name="p6_deleteTrick")
      * @return Response
      */
-    public function deleteTrick($id)
+    public function deleteTrickAction($id)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -303,10 +303,51 @@ class TrickController extends Controller
         return new Response($this->redirectToRoute('p6_homepage'));
     }
 
-    public function deleteMedia($type, $id)
+    /**
+     * @param $type
+     * @param $id
+     * @Route ("deleteMedia/{type}/{id}", name="p6_deleteMedia")
+     * @return Response
+     */
+    public function deleteMediaAction($type, $id)
     {
+        $em = $this->getDoctrine()->getManager();
 
+        if($type == 'image')
+        {
+            $image = $em->getRepository('P6PlatformBundle:Image')->find($id);
+            $imageEraser = $this->get('delete.image');
+            $imageEraser->delete($image->getFile());
+            $trick = $image->getTrick()->getId();
+            $em->remove($image);
+        }
+
+        if($type == 'video')
+        {
+            $video = $em->getRepository('P6PlatformBundle:Video')->find($id);
+            $trick = $video->getTrick();
+            $em->remove($video);
+        }
+
+        $em->flush();
+
+        $content = $this->redirectToRoute('p6_onetrick', array(
+            'id' => $trick
+        ));
+
+        return new Response($content);
     }
+
+    /**
+     * @param $type
+     * @param $id
+     * @Route ("updateMedia/{type}/{id}", name="p6_updateMedia")
+     */
+    public function updateMediaAction($type, $id)
+    {
+        var_dump($type);
+    }
+
 }
 
 

@@ -24,13 +24,13 @@
                         <div class="row">
                             {% for unit in items %}
                                 {% if unit.isVideo == true %}
-                                    <div class="col-md-3"><a href="{{ asset(unit.media) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media) }}" frameborder="0" allowfullscreen></iframe></a>
-                                        <a href="{{ path('p6_deleteMedia', {'type':}) }}"><div class="hover_delete"></div></a>
+                                    <div class="col-md-3"><a href="{{ asset(unit.media.url) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media.url) }}" frameborder="0" allowfullscreen></iframe></a>
+                                        <a href="{{ path('p6_deleteMedia', {'type':'video','id':unit.media.id}) }}"><div class="hover_delete"></div></a>
                                         <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
                                     </div>
                                 {% else %}
-                                    <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media) }}" alt="Image" class="img-fluid img-thumbnail"></a>
-                                        <a href="{{ path('p6_deleteMedia') }}"><div class="hover_delete"></div></a>
+                                    <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media.file) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media.file) }}" alt="Image" class="img-fluid img-thumbnail"></a>
+                                        <a href="{{ path('p6_deleteMedia', {'type':'image', 'id':unit.media.id}) }}"><div class="hover_delete"></div></a>
                                         <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
                                     </div>
                                 {% endif %}
@@ -42,13 +42,13 @@
                         <div class="row">
                             {% for unit in items %}
                                 {% if unit.isVideo == true %}
-                                    <div class="col-md-3"><a href="{{ asset(unit.media) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media) }}" frameborder="0" allowfullscreen></iframe></a>
-                                        <a href="{{ path('p6_deleteMedia') }}"><div class="hover_delete"></div></a>
+                                    <div class="col-md-3"><a href="{{ asset(unit.media.url) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media.url) }}" frameborder="0" allowfullscreen></iframe></a>
+                                        <a href="{{ path('p6_deleteMedia', {'type':'video','id':unit.media.id}) }}"><div class="hover_delete"></div></a>
                                         <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
                                     </div>
                                 {% else %}
-                                    <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media) }}" alt="Image" class="img-fluid img-thumbnail"></a>
-                                        <a href="{{ path('p6_deleteMedia') }}"><div class="hover_delete"></div></a>
+                                    <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media.file) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media.file) }}" alt="Image" class="img-fluid img-thumbnail"></a>
+                                        <a href="{{ path('p6_deleteMedia', {'type':'image', 'id':unit.media.id}) }}"><div class="hover_delete"></div></a>
                                         <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
                                     </div>
                                 {% endif %}
@@ -69,7 +69,6 @@
         </a>
     </div>
 
-
     {{ form_start(form) }}
     {{ form_errors(form) }}
 
@@ -86,8 +85,6 @@
             </li>
         {% endfor %}
     </ul>
-<div class="row">
-
 
 
 

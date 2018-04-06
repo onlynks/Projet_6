@@ -21,10 +21,18 @@ class ImageEraser
 
     public function delete($files)
     {
-        foreach($files as $file)
+        if(is_array($files))
         {
-            unlink($this->targetDir.'/'.$file);
+            foreach($files as $file)
+            {
+                unlink($this->targetDir.'/'.$file);
+            }
         }
+        else
+        {
+            unlink($this->targetDir.'/'.$files);
+        }
+
 
     }
 }
