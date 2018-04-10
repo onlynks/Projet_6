@@ -33,11 +33,13 @@ class TrickController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $categories = $em->getRepository('P6PlatformBundle:Category');
-        $listCategories = $categories->findAll();
+        $tricks = $em->getRepository('P6PlatformBundle:Trick');
+        $listTricks = $tricks->findAll();
+        $homepage = true;
 
         $content = $this->renderView('@P6Platform/Platform/homepage.html.twig', array(
-            'listCategories'=>$listCategories
+            'listTricks'=>$listTricks,
+            'homepage' => $homepage
         ));
 
         return new Response($content);

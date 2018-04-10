@@ -63,3 +63,25 @@
     top:50%;
     height: 20%;
 }
+
+#image_header
+{
+    background-image: url("../images/fond.jpg");
+}
+
+#title
+{
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    text-shadow: 0px 0px 20px white;
+
+}
+
+#scroll
+{
+    position: absolute;
+    bottom:5px;
+    right: 5px;
+}
