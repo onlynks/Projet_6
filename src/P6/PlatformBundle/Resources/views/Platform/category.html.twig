@@ -3,40 +3,44 @@
 {% block header %}{{ parent() }} - {{ category.name }}{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
+    <div class="container">
 
-        {% for trick in tricks %}
+<h1 class="text-center">{{ category.name }}</h1>
+        {% for row in tricks|batch(4) %}
+            <div class="row justify-content-between my-5">
+                {% for trick in row %}
 
 
-            <div class="card-deck col-md-4">
-                <div class="card">
-                    {% for image in trick.images %}
-                        <img class="card-img-top" src="{{ asset("Images/"~image.file) }}" alt="Card image trick">
-                    {% endfor %}
-                    <div class="card-body">
-                        <a href="{{ path('p6_onetrick', {'id': trick.id}) }}"><h5 class="card-title">{{ trick.name }}</h5></a>
-                        <p class="card-text">{{ trick.description }}</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <div class="card col-md-3" id="card">
+                        <h4 class="card-title text-center"><a href="{{ path('p6_onetrick', {'id': trick.id}) }}">{{ trick.name }}</a></h4>
+
+                        {% if trick.images.first.file is defined %}
+                            <img class="img-fluid" id="img_card" src="{{ asset('Images/'~trick.images.first.file) }}" >
+                        {% endif %}
+
+                        <div class="card-body">
+
+                            {% for category in trick.category %}
+                                <a href="{{ path('p6_category', {'id': category.id}) }}" class="btn btn-primary" id="btn_category">{{ category.name }}</a>
+                            {% endfor %}
+                            <div id="hover_delete_hp"></div>
+                            <div id="hover_update_hp"></div>
+
+                        </div>
                     </div>
-                </div>
-            </div>
 
+
+                {% endfor %}
+            </div>
 
         {% endfor %}
 
+
+
+
+
+
     </div>
-</div>
-
-{#
-
-<img src="{{asset(images_path~'/'~image.file) }}" alt="test" /> ///// <img src="{{ images_path }}/{{ image.file }}" alt="test" />
-
-
-    <img src="a9fa8a1d0dd783823e658bf5d658dcd1.jpeg" alt="test"/>
-    <img src="telechargement.jpeg" alt="test"/>
-#}
-
 
 {% endblock %}
 

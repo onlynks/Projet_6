@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use P6\PlatformBundle\Entity\Message;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 
@@ -128,30 +129,66 @@ class TrickController extends Controller
         $em = $this->getDoctrine()->getManager();
         $trick = $em->getRepository('P6PlatformBundle:Trick')->find($id);
 
-        $form = $this->createFormBuilder($trick)
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('Enregistrer',      SubmitType::class)
-            ->getForm();
-
-        if($request->isMethod('POST'))
+        foreach($trick->getImages() as $image)
         {
-            $form->handleRequest($request);
-
-            if($form->isValid())
+            $images[] = $image;
+            if(is_null($images))
             {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($trick);
-                $em->flush();
-
-                $content = $this->redirectToRoute('p6_onetrick', array('id' => $trick->getId()));
-                return new Response($content);
+                $images = null;
             }
+            $trick->removeImage($image);
+            $image = $image->setFile(new File($this->getParameter('target_directory').'/'.$image->getFile()));
+            $trick->addImage($image);
         }
+
+        //$trick = new Trick();
+
+        $form = $this->get('form.factory')->create(TrickType::class, $trick);
+
+
+        $form->handleRequest($request);
+
+        if($form->isValid())
+        {
+            $images = $form['images']->getNormData();
+            if(!$images->isEmpty())
+            {
+                $fileUploader = $this->get('image.uploader');
+
+                foreach ($images as $image)
+                {
+                    $name = $fileUploader->upload($image->getFIle());
+                    $image->setTrick($trick);
+                    $image->setFile($name);
+                }
+            }
+
+            $videos = $form['videos']->getNormData();
+
+            if(!$videos->isEmpty())
+            {
+                $IDBuilder = $this->get('IDBuilder');
+
+                foreach ($videos as $video)
+                {
+                    $link = $IDBuilder->extractID($video->getUrl());
+                    $video->setTrick($trick);
+                    $video->setUrl($link);
+                }
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($trick);
+            $em->flush();
+
+            $content = $this->redirectToRoute('p6_onetrick', array('id' => $trick->getId()));
+            return new Response($content);
+        }
+
 
         $content = $this->renderView('@P6Platform/Platform/updateTrick.html.twig', array(
             'form' => $form->createView(),
-            'trick' => $trick
+            'images'=> $images
         ));
         return new Response($content);
     }
@@ -252,8 +289,11 @@ class TrickController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $category = $em->getRepository('P6PlatformBundle:Category')->find($id);
-
-        $tricks = $em->getRepository('P6PlatformBundle:Trick')->findAll();
+var_dump($category->getId());
+        $tricks = $em->getRepository('P6PlatformBundle:Trick')->findBy(array(
+            'name' => 'Trick 8'
+        ));
+        var_dump($tricks);
 
         $content = $this->renderView('@P6Platform/Platform/category.html.twig', array(
             'category' => $category,

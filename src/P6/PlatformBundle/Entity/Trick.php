@@ -171,7 +171,7 @@ class Trick
      *
      * @return Trick
      */
-    public function addImage(\P6\PlatformBundle\Entity\Image $image)
+    public function addImage($image)
     {
         $this->images[] = $image;
 
