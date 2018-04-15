@@ -3,10 +3,14 @@
 namespace P6\PlatformBundle\Controller;
 
 use P6\PlatformBundle\Entity\Trick;
+use P6\PlatformBundle\Form\ImageType;
 use P6\PlatformBundle\Form\MessageType;
 use P6\PlatformBundle\Form\TrickType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -51,9 +55,8 @@ class TrickController extends Controller
      * @Route ("/trick/{id}", name="p6_onetrick")
      * @return Response
      */
-    public function oneTrickAction($id, $request = null)
+    public function oneTrickAction($id, Request $request = null)
     {
-
         $em = $this->getDoctrine()->getManager();
 
         $trick = $em->getRepository('P6PlatformBundle:Trick')->find($id);
@@ -110,10 +113,38 @@ class TrickController extends Controller
             $carousel = null;
         }
 
+        $formImage = $this->createFormBuilder()
+            ->add('images', CollectionType::class, array(
+                'entry_type'   => ImageType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+            ))
+            ->getForm();
+
+        $formImage->handleRequest($request);
+
+        if($formImage->isValid())
+        {
+           $images = $formImage['images']->getNormData();
+           $fileUploader = $this->get('image.uploader');
+
+            foreach ($images as $image)
+            {
+                $name = $fileUploader->upload($image->getFIle());
+                $image->setTrick($trick);
+                $image->setFile($name);
+                $em->persist($image);
+                $em->flush();
+            }
+            return new Response($this->redirectToRoute('p6_onetrick', array('id' => $trick->getId())));
+
+        }
+
         $content = $this->renderView('@P6Platform/Platform/trick.html.twig', array(
             'trick'=> $trick,
             'carousel' => $carousel,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'formImage' => $formImage->createView()
         ));
 
         return new Response($content);
@@ -129,54 +160,26 @@ class TrickController extends Controller
         $em = $this->getDoctrine()->getManager();
         $trick = $em->getRepository('P6PlatformBundle:Trick')->find($id);
 
-        foreach($trick->getImages() as $image)
-        {
-            $images[] = $image;
-            if(is_null($images))
-            {
-                $images = null;
-            }
-            $trick->removeImage($image);
-            $image = $image->setFile(new File($this->getParameter('target_directory').'/'.$image->getFile()));
-            $trick->addImage($image);
-        }
 
-        //$trick = new Trick();
+        $formBuilder = $this->createFormBuilder($trick);
 
-        $form = $this->get('form.factory')->create(TrickType::class, $trick);
+        $formBuilder
+            ->add('name',      TextType::class)
+            ->add('description',     TextareaType::class)
+            ->add('category', EntityType::class, array(
+                'class'        => 'P6PlatformBundle:Category',
+                'choice_label' => 'name',
+                'multiple'     => true,
+            ))
+        ;
+
+        $form = $formBuilder->getForm();
 
 
         $form->handleRequest($request);
 
         if($form->isValid())
         {
-            $images = $form['images']->getNormData();
-            if(!$images->isEmpty())
-            {
-                $fileUploader = $this->get('image.uploader');
-
-                foreach ($images as $image)
-                {
-                    $name = $fileUploader->upload($image->getFIle());
-                    $image->setTrick($trick);
-                    $image->setFile($name);
-                }
-            }
-
-            $videos = $form['videos']->getNormData();
-
-            if(!$videos->isEmpty())
-            {
-                $IDBuilder = $this->get('IDBuilder');
-
-                foreach ($videos as $video)
-                {
-                    $link = $IDBuilder->extractID($video->getUrl());
-                    $video->setTrick($trick);
-                    $video->setUrl($link);
-                }
-            }
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($trick);
             $em->flush();
@@ -188,7 +191,6 @@ class TrickController extends Controller
 
         $content = $this->renderView('@P6Platform/Platform/updateTrick.html.twig', array(
             'form' => $form->createView(),
-            'images'=> $images
         ));
         return new Response($content);
     }
@@ -289,11 +291,7 @@ class TrickController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $category = $em->getRepository('P6PlatformBundle:Category')->find($id);
-var_dump($category->getId());
-        $tricks = $em->getRepository('P6PlatformBundle:Trick')->findBy(array(
-            'name' => 'Trick 8'
-        ));
-        var_dump($tricks);
+        $tricks = $category->getTrick();
 
         $content = $this->renderView('@P6Platform/Platform/category.html.twig', array(
             'category' => $category,
@@ -383,11 +381,20 @@ var_dump($category->getId());
     /**
      * @param $type
      * @param $id
-     * @Route ("updateMedia/{type}/{id}", name="p6_updateMedia")
+     * @Route ("updateMedia/{id}", name="p6_updateMedia")
      */
     public function updateMediaAction($type, $id)
     {
-        var_dump($type);
+        $em = $this->getDoctrine()->getManager();
+        $trick = $em->find($id);
+
+        $form = $this->get('form.factory')->createFormBuilder($trick)
+            ->add('images', CollectionType::class, array(
+                'entry_type'   => ImageType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+            ))
+        ;
     }
 
 }

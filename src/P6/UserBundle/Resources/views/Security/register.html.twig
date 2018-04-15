@@ -1,7 +1,8 @@
 {% extends "layout.html.twig" %}
 
 {% block body %}
-
+<div class="container">
+    
     {{ form_start(form) }}
 
     {{ form_row(form.username, {'label':'Nom'}) }}
@@ -11,5 +12,5 @@
     <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
     {{ form_end(form) }}
 
-
+</div>
 {% endblock %}

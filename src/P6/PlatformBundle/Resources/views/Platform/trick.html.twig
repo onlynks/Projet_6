@@ -9,8 +9,12 @@
             <h1 class="display-3">{{ trick.name }}</h1>
             <p class="lead">{{ trick.description }}</p>
             <a class="btn btn-lg btn-success" href="{{ path('p6_updateTrick', {'id': trick.id}) }}" role="button">Modifier la figure</a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Ajouter une image
+            </button>
             {% if is_granted('ROLE_ADMIN') %}
                 <a class="btn btn-lg btn-success" href="{{ path('p6_deleteTrick', {'id': trick.id}) }}" role="button">Supprimer la figure</a>
+
             {% endif %}
         </div>
     </div>
@@ -26,12 +30,12 @@
                                 {% if unit.isVideo == true %}
                                     <div class="col-md-3"><a href="{{ asset(unit.media.url) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media.url) }}" frameborder="0" allowfullscreen></iframe></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'video','id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                        {#<a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% else %}
                                     <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media.file) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media.file) }}" alt="Image" class="img-fluid img-thumbnail"></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'image', 'id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                        {#<a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -44,12 +48,12 @@
                                 {% if unit.isVideo == true %}
                                     <div class="col-md-3"><a href="{{ asset(unit.media.url) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media.url) }}" frameborder="0" allowfullscreen></iframe></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'video','id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                        {#<a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% else %}
                                     <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media.file) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media.file) }}" alt="Image" class="img-fluid img-thumbnail"></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'image', 'id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>
+                                        {# <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% endif %}
 
@@ -69,28 +73,111 @@
         </a>
     </div>
 
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+    <div class="container">
 
-    {{ form_row(form.content, {'label':'Votre Message'}) }}
+        {{ form_start(formImage) }}
 
-    <button type="submit" class="btn btn-primary" formnovalidate>Poster</button>
-    {{ form_end(form) }}
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_row(formImage) }}
+                        <a href="#" id="add_image" class="btn btn-default">Ajouter une image</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
 
-    <ul class="list-group list-group-flush">
-        {% for message in trick.message %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="px-5">{{ message.content }}</div>
-                <span class="badge badge-primary badge-pill ">{{ message.date|date("m/d/Y - H:i") }}</span>
-            </li>
-        {% endfor %}
-    </ul>
-
-
-
-    {#
-        <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media) }}" alt="Image" class="img-fluid img-thumbnail"></a>
+                    </div>
+                </div>
+            </div>
         </div>
-        #}
+        {{ form_end(formImage) }}
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.content, {'label':'Votre Message'}) }}
+
+        <button type="submit" class="btn btn-primary" formnovalidate>Poster</button>
+        {{ form_end(form) }}
+
+        <section class="row-section">
+            <div class="container">
+
+                <div class="col-md-10 offset-md-1 row-block">
+                    <ul id="sortable">
+            {% for message in trick.message %}
+                <li><div class="media">
+                        <div class="media-left align-self-center">
+                            <img class="rounded-circle" src="{{ asset('Images/'~ message.user.photo) }}">
+                        </div>
+                        <div class="media-body">
+                            <h4>{{ message.user.username }}</h4>
+                            <p>{{ message.content }}</p>
+                        </div>
+                        <div class="media-right align-self-center">
+                            <span class="badge badge-primary badge-pill ">{{ message.date|date("m/d/Y - H:i") }}</span>
+                        </div>
+                    </div></li>
+            {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $container = $('div#form_images');
+            var index = $container.find(':input').length;
+            $('#add_image').click(function(e) {
+                addImage($container);
+                e.preventDefault();
+                return false;
+            });
+
+            if (index == 0) {
+                addImage($container);
+            } else {
+                $container.children('div').each(function() {
+                    addDeleteLink($(this));
+                });
+            }
+
+            function addImage($container) {
+                var template = $container.attr('data-prototype')
+                    .replace(/__name__label__/g, 'Image n°' + (index+1))
+                    .replace(/__name__/g,        index)
+                ;
+                var $prototype = $(template);
+                addDeleteLink($prototype);
+                $container.append($prototype);
+                index++;
+            }
+
+            function addDeleteLink($prototype) {
+                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+                $prototype.append($deleteLink);
+                $deleteLink.click(function(e) {
+                    $prototype.remove();
+                    index = index-1;
+
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        });
+    </script>
     {% endblock %}
 

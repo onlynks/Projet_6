@@ -10,121 +10,131 @@
         {{ form_row(form.description, {'label':'Description'}) }}
         {{ form_row(form.category, {'label':'Categorie'}) }}
 
-        {{ dump(images[0].file.filename) }}
+        {#{{ dump(images[0].file.filename) }}#}
+        {#
+                <div class="row">
+                    <div class="col-md-6 well form_image px-5 my-5">
+                        <div>
+                            {{ form_row(form.images, {'attr': {'class': 'foo'}}) }}
 
-        <div class="row">
-            <div class="col-md-6 well form_image px-5 my-5">
-                <div>
-                    {#{{ form_row(form.images, {'attr': {'class': 'foo'}}) }}#}
-                    {% for images in  form.images %}
-                        {{ form_widget(form.images) }}
-                        <a href="#" class="btn btn-danger">Supprimer</a>
-                    {% endfor %}
-                </div>
-                <a href="#" id="add_image" class="btn btn-default">Ajouter une image</a>
-            </div>
+                        </div>
+                        <a href="#" id="add_image" class="btn btn-default">Ajouter une image</a>
+                    </div>
 
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    var $container = $('div#p6_platformbundle_trick_images');
-                    var index = $container.find(':input').length;
-
-                    $('#add_image').click(function(e) {
-                        addImage($container);
-                        e.preventDefault();
-                        return false;
-                    });
-
-                    if (index == 0) {
-                        addImage($container);
-
-                    } /*else {
-                        $container.children().each(function() {
-                            addDeleteLink($(this));
-                        });
-                    }*/
-
-                function addImage($container) {
-                    var template = $container.attr('data-prototype')
-                        .replace(/__name__label__/g, "").replace(/File/g, 'Nouvelle image')
-                    ;
-                    var $prototype = $(template);
-                    addDeleteLink($prototype);
-                    $container.append($prototype);
-                    index++;
-                }
-
-                function addDeleteLink($prototype) {
-                    var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
-                    $prototype.append($deleteLink);
-                    $deleteLink.click(function(e) {
-                        $prototype.remove();
-
-                        e.preventDefault();
-                        return false;
-                    });
-                }
-console.log($container.children());
-                $container.children().addClass('input_file')
-                    .children()
-                    /*.remove("div")
-                    .remove("legend")*/
-                ;
-            });
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            var $container = $('div#p6_platformbundle_trick_images');
+                            var index = $container.find(':input').length;
 
 
+                            $('#add_image').click(function(e) {
+                                addImage($container);
+                                e.preventDefault();
+                                return false;
+                            });
 
-</script>
+                            if (index == 0) {
+                                addImage($container);
 
-            <div class="col-md-6 well form_video px-5 my-5">
-                {{ form_row(form.videos) }}
-                <a href="#" id="add_video" class="btn btn-default">Ajouter une video</a>
-            </div>
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    var $container = $('div#p6_platformbundle_trick_videos');
-                    var index = $container.find(':input').length;
-                    $('#add_video').click(function(e) {
-                        addVideo($container);
-                        e.preventDefault();
-                        return false;
-                    });
+                            } else {
+                                $container.children().each(function() {
 
-                    if (index == 0) {
-                        addVideo($container);
-                    } else {
-                        $container.children().each(function() {
-                            addDeleteLink($(this));
-                        });
-                    }
+                                    addDeleteLink($(this));
+                                });
+                            }
 
-                    function addVideo($container) {
-                        var template = $container.attr('data-prototype')
-                            .replace(/__name__label__/g, 'Video n°' + (index+1))
-                            .replace(/__name__/g,        index)
+                            $container.children().each(function(index){
+                                var image = ($(this)).append('<img src="{{ asset('Images/'~images['yo'].file.filename) }}">');
+                                image.replace('yo', 0);
+                                console.log(index)
+                            });
+
+
+                            function addDeleteLink($prototype) {
+                                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+                                $prototype.append($deleteLink);
+                                $deleteLink.click(function(e) {
+                                    $prototype.remove();
+
+                                    e.preventDefault();
+                                    return false;
+                                });
+                            }
+
+                        function addImage($container) {
+                            var template = $container.attr('data-prototype')
+                                .replace(/__name__label__/g, "").replace(/File/g, 'Nouvelle image')
+                                .replace(/__name__/g,       index)
+                            ;
+                            var $prototype = $(template);
+                            addDeleteLink($prototype);
+                            $container.append($prototype);
+                            index++;
+                        }
+
+
+
+                        $container.children().addClass('input_file')
+                            .children()
+                            /*.remove("div")
+                            .remove("legend")*/
                         ;
-                        var $prototype = $(template);
-                        addDeleteLink($prototype);
-                        $container.append($prototype);
-                        index++;
-                    }
+                    });
 
-                    function addDeleteLink($prototype) {
-                        var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
-                        $prototype.append($deleteLink);
-                        $deleteLink.click(function(e) {
-                            $prototype.remove();
 
-                            e.preventDefault();
-                            return false;
+
+        </script>
+
+                    <div class="col-md-6 well form_video px-5 my-5">
+                        {{ form_row(form.videos) }}
+                        <a href="#" id="add_video" class="btn btn-default">Ajouter une video</a>
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            var $container = $('div#p6_platformbundle_trick_videos');
+                            var index = $container.find(':input').length;
+                            $('#add_video').click(function(e) {
+                                addVideo($container);
+                                e.preventDefault();
+                                return false;
+                            });
+
+                            if (index == 0) {
+                                addVideo($container);
+                            } else {
+                                $container.children().each(function() {
+                                    addDeleteLink($(this));
+                                });
+                            }
+
+                            function addVideo($container) {
+                                var template = $container.attr('data-prototype')
+                                    .replace(/__name__label__/g, 'Video n°' + (index+1))
+                                    .replace(/__name__/g,        index)
+                                ;
+                                var $prototype = $(template);
+                                addDeleteLink($prototype);
+                                $container.append($prototype);
+                                index++;
+                            }
+
+                            function addDeleteLink($prototype) {
+                                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+                                $prototype.append($deleteLink);
+                                $deleteLink.click(function(e) {
+                                    $prototype.remove();
+
+                                    e.preventDefault();
+                                    return false;
+                                });
+                            }
                         });
-                    }
-                });
-            </script>
+                    </script>
 
-            <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
-        </div>
-
+                    <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
+                </div>
+                #}
+        <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

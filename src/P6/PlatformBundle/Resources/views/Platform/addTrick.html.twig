@@ -49,6 +49,7 @@
                 $prototype.append($deleteLink);
                 $deleteLink.click(function(e) {
                     $prototype.remove();
+                    index = index-1;
 
                     e.preventDefault();
                     return false;
@@ -95,6 +96,7 @@
                 $prototype.append($deleteLink);
                 $deleteLink.click(function(e) {
                     $prototype.remove();
+                    index = index-1;
 
                     e.preventDefault();
                     return false;
