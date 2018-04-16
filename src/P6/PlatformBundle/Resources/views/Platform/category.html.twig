@@ -23,8 +23,8 @@
                             {% for category in trick.category %}
                                 <a href="{{ path('p6_category', {'id': category.id}) }}" class="btn btn-primary" id="btn_category">{{ category.name }}</a>
                             {% endfor %}
-                            <div id="hover_delete_hp"></div>
-                            <div id="hover_update_hp"></div>
+                            <a data-toggle="modal" data-target="#exampleModal"><div id="hover_delete_hp"></div></a>
+                            <a href="{{ path('p6_updateTrick', {'id': trick.id}) }}"> <div id="hover_update_hp"></div></a>
 
                         </div>
                     </div>

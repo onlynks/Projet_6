@@ -4,21 +4,53 @@
 
 {% block body %}
 
-    {# S'il y a une erreur, on l'affiche dans un joli cadre #}
+  <div class="container">
     {% if error %}
         <div class="alert alert-danger">{{ error.message }}</div>
     {% endif %}
 
     {# Le formulaire, avec URL de soumission vers la route « login_check » comme on l'a vu #}
-    <form action="{{ path('login_check') }}" method="post">
-        <label for="username">Utilisateur :</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+      <form action="{{ path('login_check') }}" method="post">
+          <div class="form-group">
+              <label for="exampleInputEmail1">Utilisateur</label>
+              <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" />
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1">Mot de Passe</label>
+              <input type="password" class="form-control" id="password" name="_password" placeholder="Password">
+          </div>
 
+          <button type="submit" class="btn btn-primary">Se connecter</button>
+      </form>
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="_password" />
-        <br />
-        <input type="submit" value="Connexion" />
+    <button type="button" class="btn btn-primary mt-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Mot de passe oublié?</button>
+
+    <form action="{{ path('p6_forgottenPassword') }}" method="post">
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Mot de passe perdu</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Votre adresse email:</label>
+                                <input type="email" class="form-control" name="email" id="email">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <input type="submit" value="Envoyer" class="btn btn-primary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 
 {% endblock %}
+

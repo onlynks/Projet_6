@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use P6\PlatformBundle\Entity\Message;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -64,6 +65,18 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="P6\PlatformBundle\Entity\Message", mappedBy="user", cascade={"remove"})
      */
     private $message;
+
+    /**
+     * @var string
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email(
+     *     message = "L' email '{{ value }}' n'est pas valide.",
+     *     checkMX = true
+     * )
+     */
+    private $email;
+
+
 
     public function eraseCredentials()
     {
@@ -197,6 +210,22 @@ class User implements UserInterface
     public function getPhoto()
     {
         return $this->photo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 }
 

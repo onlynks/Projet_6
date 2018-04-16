@@ -3,6 +3,7 @@
 namespace P6\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,6 +18,7 @@ class UserType extends AbstractType
     {
         $builder->add('username', TextType::class)
                 ->add('password',TextType::class)
+                 -> add('email', EmailType::class)
                 //->add('salt')
                 //->add('roles')
                 ->add('photo', FileType::class);

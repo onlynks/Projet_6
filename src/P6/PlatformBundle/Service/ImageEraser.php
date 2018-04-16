@@ -25,7 +25,10 @@ class ImageEraser
         {
             foreach($files as $file)
             {
-                unlink($this->targetDir.'/'.$file);
+                if(file_exists($file))
+                {
+                    unlink($this->targetDir.'/'.$file);
+                }
             }
         }
         else

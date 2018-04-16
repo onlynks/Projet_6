@@ -16,7 +16,7 @@
                 {% for trick in row %}
 
 
-                            <div class="card col-md-3" id="card">
+                            <div class="card col-md-3 col-sm-6" id="card">
                                 <h4 class="card-title text-center"><a href="{{ path('p6_onetrick', {'id': trick.id}) }}">{{ trick.name }}</a></h4>
 
                                 {% if trick.images.first.file is defined %}
@@ -28,31 +28,32 @@
                                         {% for category in trick.category %}
                                         <a href="{{ path('p6_category', {'id': category.id}) }}" class="btn btn-primary" id="btn_category">{{ category.name }}</a>
                                         {% endfor %}
-                                    <a data-toggle="modal" data-target="#exampleModal"><div id="hover_delete_hp"></div></a>
+                                    <a data-toggle="modal" data-target="#exampleModal{{ trick.id }}"><div id="hover_delete_hp"></div></a>
                                     <a href="{{ path('p6_updateTrick', {'id': trick.id}) }}"><div id="hover_update_hp"></div></a>
+                                    <div class="modal fade" id="exampleModal{{ trick.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Merci de confirmer</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Etes-vous bien certain de vouloir supprimer cette figure ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="{{ path('p6_deleteTrick', {'id' : trick.id}) }}"><button type="button" class="btn btn-primary">Oui</button></a>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
 
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Merci de confirmer</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Etes-vous bien certain de vouloir supprimer cette figure?
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="{{ path('p6_deleteTrick', {'id' : trick.id}) }}"><button type="button" class="btn btn-primary">Oui</button></a>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 {% endfor %}
                 </div>
 
@@ -60,5 +61,5 @@
     </div>
 
 
-
+    <script src="{{ asset("bundles/p6platform/javascript/js.js") }}"></script>
 {% endblock %}

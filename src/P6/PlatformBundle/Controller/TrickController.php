@@ -3,9 +3,11 @@
 namespace P6\PlatformBundle\Controller;
 
 use P6\PlatformBundle\Entity\Trick;
+use P6\PlatformBundle\Entity\Video;
 use P6\PlatformBundle\Form\ImageType;
 use P6\PlatformBundle\Form\MessageType;
 use P6\PlatformBundle\Form\TrickType;
+use P6\PlatformBundle\Form\VideoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -48,7 +50,6 @@ class TrickController extends Controller
         ));
 
         return new Response($content);
-
     }
 
     /**
@@ -74,6 +75,7 @@ class TrickController extends Controller
             {
                 $em->persist($message);
                 $em->flush();
+                return new Response($this->redirectToRoute('p6_onetrick', array('id' => $trick->getId())));
             }
         }
 
@@ -134,17 +136,46 @@ class TrickController extends Controller
                 $image->setTrick($trick);
                 $image->setFile($name);
                 $em->persist($image);
-                $em->flush();
             }
             return new Response($this->redirectToRoute('p6_onetrick', array('id' => $trick->getId())));
 
         }
 
+        $formVideo = $this->createFormBuilder()
+            ->add('videos', CollectionType::class, array(
+                'entry_type'   => VideoType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
+            ))
+            ->getForm();
+
+        $formImage->handleRequest($request);
+
+        if($formVideo->isValid())
+        {
+            $videos = $formVideo['videos']->getNormData();
+            $IDBuilder = $this->get('IDBuilder');
+
+            foreach ($videos as $video)
+            {
+                $link = $IDBuilder->extractID($video->getUrl());
+                $video->setTrick($trick);
+                $video->setUrl($link);
+                $em->persist($image);
+            }
+
+            return new Response($this->redirectToRoute('p6_onetrick', array('id' => $trick->getId())));
+
+        }
+
+        $em->flush();
+
         $content = $this->renderView('@P6Platform/Platform/trick.html.twig', array(
             'trick'=> $trick,
             'carousel' => $carousel,
             'form' => $form->createView(),
-            'formImage' => $formImage->createView()
+            'formImage' => $formImage->createView(),
+            'formVideo' => $formVideo->createView()
         ));
 
         return new Response($content);

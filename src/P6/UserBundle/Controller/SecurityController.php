@@ -37,7 +37,7 @@ class SecurityController extends Controller
      * @return Response
      * @Route("/registration", name="p6_registration")
      */
-    public function registration(Request $request)
+    public function registrationAction(Request $request)
     {
         $user = new User();
         $user->setRoles(array('ROLE_USER'));
@@ -73,5 +73,40 @@ class SecurityController extends Controller
 
 
     }
+
+    /**
+     * @return Response
+     * @Route("/password", name="p6_forgottenPassword")
+     */
+    public function sendPasswordAction(Request $email)
+    {
+        $mail = $email->get('email');
+
+        $repo = $this->getDoctrine()->getRepository('P6UserBundle:User');;
+
+        $query = $repo->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $mail)
+            ->getQuery();
+
+        $user = $query->getResult();
+
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('nicogar12@gmail.com')
+            ->setTo($user[0]->getEmail())
+            ->setBody(
+                $this->renderView(
+                    '@P6User/email.html.twig',
+                    array('user' => $user[0])
+                ),
+                'text/html'
+            )
+
+        ;
+        $this->get('mailer')->send($message);
+
+        return new Response($this->redirectToRoute('login'));
+    }
+
 
 }

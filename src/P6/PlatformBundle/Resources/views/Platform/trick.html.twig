@@ -4,19 +4,27 @@
 
 {% block body %}
 
-    <div class="container">
+    <div class="container ">
+        <h1 class="display-3 text-center">{{ trick.name }}</h1>
         <div class="jumbotron">
-            <h1 class="display-3">{{ trick.name }}</h1>
-            <p class="lead">{{ trick.description }}</p>
-            <a class="btn btn-lg btn-success" href="{{ path('p6_updateTrick', {'id': trick.id}) }}" role="button">Modifier la figure</a>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Ajouter une image
-            </button>
-            {% if is_granted('ROLE_ADMIN') %}
-                <a class="btn btn-lg btn-success" href="{{ path('p6_deleteTrick', {'id': trick.id}) }}" role="button">Supprimer la figure</a>
 
-            {% endif %}
+            <p class="lead">{{ trick.description }}</p>
+            <div class="d-flex justify-content-around">
+                <a class="btn btn-lg btn-success" href="{{ path('p6_updateTrick', {'id': trick.id}) }}" role="button">Modifier la figure</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="btn btn-lg btn-success" href="{{ path('p6_deleteTrick', {'id': trick.id}) }}" role="button">Supprimer la figure</a>
+
+                {% endif %}
+            </div>
         </div>
+            <div class="d-flex flex-row-reverse mb-5">
+                    <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#imageModal">
+                        Ajouter une image
+                    </button>
+                    <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#videoModal">
+                        Ajouter une video
+                    </button>
+            </div>
     </div>
 
 
@@ -30,12 +38,10 @@
                                 {% if unit.isVideo == true %}
                                     <div class="col-md-3"><a href="{{ asset(unit.media.url) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media.url) }}" frameborder="0" allowfullscreen></iframe></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'video','id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        {#<a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% else %}
                                     <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media.file) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media.file) }}" alt="Image" class="img-fluid img-thumbnail"></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'image', 'id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        {#<a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -48,12 +54,10 @@
                                 {% if unit.isVideo == true %}
                                     <div class="col-md-3"><a href="{{ asset(unit.media.url) }}" class="thumbnail"><iframe width="250" height="250" src="{{ asset(unit.media.url) }}" frameborder="0" allowfullscreen></iframe></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'video','id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        {#<a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% else %}
                                     <div class="col-md-3 col-sm-6"><a href="{{ asset('Images/'~unit.media.file) }}" class="thumbnail"><img src="{{ asset('Images/'~unit.media.file) }}" alt="Image" class="img-fluid img-thumbnail"></a>
                                         <a href="{{ path('p6_deleteMedia', {'type':'image', 'id':unit.media.id}) }}"><div class="hover_delete"></div></a>
-                                        {# <a href="{{ path('p6_homepage') }}"><div class="hover_update"></div></a>#}
                                     </div>
                                 {% endif %}
 
@@ -77,7 +81,7 @@
 
         {{ form_start(formImage) }}
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -99,6 +103,122 @@
             </div>
         </div>
         {{ form_end(formImage) }}
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var $container = $('div#form_images');
+                var index = $container.find(':input').length;
+                $('#add_image').click(function(e) {
+                    addImage($container);
+                    e.preventDefault();
+                    return false;
+                });
+
+                if (index == 0) {
+                    addImage($container);
+                } else {
+                    $container.children('div').each(function() {
+                        addDeleteLink($(this));
+                    });
+                }
+
+                function addImage($container) {
+                    var template = $container.attr('data-prototype')
+                        .replace(/__name__label__/g, 'Image n°' + (index+1))
+                        .replace(/__name__/g,        index)
+                    ;
+                    var $prototype = $(template);
+                    addDeleteLink($prototype);
+                    $container.append($prototype);
+                    index++;
+                }
+
+                function addDeleteLink($prototype) {
+                    var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+                    $prototype.append($deleteLink);
+                    $deleteLink.click(function(e) {
+                        $prototype.remove();
+                        index = index-1;
+
+                        e.preventDefault();
+                        return false;
+                    });
+                }
+            });
+        </script>
+
+        {{ form_start(formVideo) }}
+
+        <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_row(formVideo) }}
+                        <a href="#" id="add_video" class="btn btn-default">Ajouter une video</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var $container = $('div#form_videos');
+                var index = $container.find(':input').length;
+                $('#add_video').click(function(e) {
+                    addVideo($container);
+                    e.preventDefault();
+                    return false;
+                });
+
+                if (index == 0) {
+                    addVideo($container);
+                } else {
+                    $container.children('div').each(function() {
+                        addDeleteLink($(this));
+                    });
+                }
+
+                function addVideo($container) {
+                    var template = $container.attr('data-prototype')
+                        .replace(/__name__label__/g, 'Video n°' + (index+1))
+                        .replace(/__name__/g,        index)
+                    ;
+                    var $prototype = $(template);
+                    addDeleteLink($prototype);
+                    $container.append($prototype);
+                    index++;
+                }
+
+                function addDeleteLink($prototype) {
+                    var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+                    $prototype.append($deleteLink);
+                    $deleteLink.click(function(e) {
+                        $prototype.remove();
+                        index = index-1;
+
+                        e.preventDefault();
+                        return false;
+                    });
+                }
+            });
+        </script>
+
+        {{ form_end(formVideo) }}
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
@@ -133,51 +253,6 @@
         </section>
     </div>
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var $container = $('div#form_images');
-            var index = $container.find(':input').length;
-            $('#add_image').click(function(e) {
-                addImage($container);
-                e.preventDefault();
-                return false;
-            });
-
-            if (index == 0) {
-                addImage($container);
-            } else {
-                $container.children('div').each(function() {
-                    addDeleteLink($(this));
-                });
-            }
-
-            function addImage($container) {
-                var template = $container.attr('data-prototype')
-                    .replace(/__name__label__/g, 'Image n°' + (index+1))
-                    .replace(/__name__/g,        index)
-                ;
-                var $prototype = $(template);
-                addDeleteLink($prototype);
-                $container.append($prototype);
-                index++;
-            }
-
-            function addDeleteLink($prototype) {
-                var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
-                $prototype.append($deleteLink);
-                $deleteLink.click(function(e) {
-                    $prototype.remove();
-                    index = index-1;
-
-                    e.preventDefault();
-                    return false;
-                });
-            }
-        });
-    </script>
     {% endblock %}
 
