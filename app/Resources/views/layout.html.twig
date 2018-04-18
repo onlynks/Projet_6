@@ -15,24 +15,26 @@
 <body>
 
 {% if homepage is defined and homepage == true %}
+
     <div  id="image_header">
         <h1 id="title" >SnowTricks</h1>
         <a id="scroll" href="#"><img src="https://png.icons8.com/ultraviolet/50/000000/sort-down.png"></a>
     </div>
 {% endif %}
 
-    <div class="mb-5" id="limit">
-    {{ render(controller("P6PlatformBundle:Trick:menu")) }}
-    </div>
 
-    <div class="container-fluid">
+    {{ render(controller("P6PlatformBundle:Trick:menu")) }}
+
+
+    <div class="container-fluid page">
 
 
     {% block body %}
     {% endblock %}
+
     </div>
-
-
+<script src="{{ asset("bundles/p6platform/javascript/js.js") }}"></script>
+<script src="{{ asset("bundles/p6platform/javascript/homepage.js") }}"></script>
 </body>
 </html>
 

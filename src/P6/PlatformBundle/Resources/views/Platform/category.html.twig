@@ -7,11 +7,11 @@
 
 <h1 class="text-center">{{ category.name }}</h1>
         {% for row in tricks|batch(4) %}
-            <div class="row justify-content-between my-5">
+            <div class="row justify-content-between mt-5">
                 {% for trick in row %}
 
-
-                    <div class="card col-md-3" id="card">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card" id="card">
                         <h4 class="card-title text-center"><a href="{{ path('p6_onetrick', {'id': trick.id}) }}">{{ trick.name }}</a></h4>
 
                         {% if trick.images.first.file is defined %}
@@ -28,7 +28,7 @@
 
                         </div>
                     </div>
-
+                </div>
 
                 {% endfor %}
             </div>

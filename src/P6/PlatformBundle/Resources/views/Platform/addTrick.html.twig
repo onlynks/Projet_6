@@ -10,7 +10,7 @@
     {{ form_row(form.description, {'label':'Description'}) }}
     {{ form_row(form.category, {'label':'Categorie'}) }}
 
-    <div class="row">
+    <div class="row d-flex justify-content-center pb-5">
     <div class="col-md-6 well form_image px-5 my-5">
         {{ form_row(form.images) }}
         <a href="#" id="add_image" class="btn btn-default">Ajouter une image</a>
@@ -105,7 +105,7 @@
         });
     </script>
 
-    <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
+    <button type="submit" class="btn btn" formnovalidate>Enregistrer</button>
     </div>
 
     {{ form_end(form) }}
