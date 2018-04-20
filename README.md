@@ -25,6 +25,8 @@ Go to the app/config/parameters file and fil those fields accordind to your sett
 
 Do the command composer update that will install all the depencies.
 
+_(You can delete the SQL File cloned at the same time as the project)_
+
 # That's it! You can now use the application!
 
 
