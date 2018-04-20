@@ -11,17 +11,20 @@ Once the database is installed, you can clone the project in your directory.
 ## 1th step: Parameters
 
 Go to the app/config/parameters file and fil those fields accordind to your settings:
-    database_host:
-    database_port:
-    database_name:
-    database_user:
-    database_password:
-    mailer_transport:
-    mailer_host:
-    mailer_user: 
-    mailer_password:
-    
-If you need more informations about how to configure this fail for the mail sending check this link:[mail sending](https://symfony.com/doc/3.4/email.html) and if u are using gmail check here:[Gmail](https://symfony.com/doc/3.4/email/gmail.html)
+
+``` parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: p6
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+```
+
+If you need more informations about how to configure this fail for the mail sending check here[mail sending](https://symfony.com/doc/3.4/email.html) and if u are using gmail check here[Gmail](https://symfony.com/doc/3.4/email/gmail.html)
     
 ## 2th step: Composer dependencies
 
