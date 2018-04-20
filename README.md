@@ -2,7 +2,7 @@ Install the application
 ========================
 
 You need to install Composer if you don't already get it.  
-First, create a Database and use the SQL code fil it. It already contain some data (tricks and categories).*
+First, create a Database and use the file DatabaseFile.sql to fil it. It already contain some data (tricks and categories).*
 
 -----------------
 
