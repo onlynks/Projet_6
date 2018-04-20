@@ -2,7 +2,7 @@ Install the application
 ========================
 
 You need to install Composer if you don't already get it.  
-First, create a Database and use the file DatabaseFile.sql to fil it. It already contain some data (tricks and categories).*
+First, create a Database and use the file DatabaseFile.sql to fill it. It already contain some data (tricks and categories).*
 
 -----------------
 
@@ -10,7 +10,7 @@ Once the database is installed, you can clone the project in your directory.
 
 ## 1th step: Parameters
 
-Go to the app/config/parameters file and fil those fields accordind to your settings:
+Go to the app/config/parameters file and fill those fields accordind to your settings:
 
 ``` parameters:
     database_host: 127.0.0.1
