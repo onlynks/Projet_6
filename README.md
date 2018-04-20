@@ -2,7 +2,7 @@ Install the application
 ========================
 
 You need to install Composer if you don't already get it.  
-First, use the SQL code to create the Database. It already contain some data (tricks and categories).*
+First, create a Database and use the SQL code fil it. It already contain some data (tricks and categories).*
 
 -----------------
 
@@ -19,8 +19,9 @@ Go to the app/config/parameters file and fil those fields accordind to your sett
     mailer_transport:   
     mailer_host:   
     mailer_user:   
-    mailer_password:   
-   
+    mailer_password:  
+    Enter here the database's name you chose ahead.  
+    If you don't success to send mail for the password of your users, you can check the documentation [Mail setting](https://symfony.com/doc/3.4/email.html).   
 ## 2th step: Composer dependencies
 
 Do the command composer update that will install all the depencies.
